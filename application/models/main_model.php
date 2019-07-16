@@ -31,12 +31,7 @@
             return $this->db->insert('restaurant', $data);
         }
 
-        public function show_all_resto(){
-            $query = $this->db->order_by('id', 'ASC')->get('restaurant');
-            return $query->result();
-        }
-
-        public function restaurant_datatables(){
+        public function read_restaurant(){
             $this->load->library('datatables');
             $this->datatables->select('id, code, image, name, address, phone_number, description');
             $this->datatables->add_column('delete', anchor('main/delete_resto/$1', 'Hapus', array('class' => 'btn btn-danger btn-sm')), 'id');
@@ -45,25 +40,6 @@
             return print_r($this->datatables->generate());
         }
 
-        public function news_datatables(){
-            $this->load->library('datatables');
-            $this->datatables->select('id, image, title, author, date, location, category, description');
-            $this->datatables->add_column('image', "<center><img width='100px' src='".base_url()."assets/foto/$1'></img></center>", 'image');
-            $this->datatables->add_column('delete', anchor('main/delete_resto/$1', 'Hapus', array('class' => 'btn btn-danger btn-sm')), 'id');
-            $this->datatables->add_column('edit', anchor('main/edit_resto/$1', 'Edit', array('class' => 'btn btn-warning btn-sm')), 'id');
-            $this->datatables->from('news');
-            return print_r($this->datatables->generate());
-        }
-
-        public function culinary_datatables(){
-            $this->load->library('datatables');
-            $this->datatables->select('id, code, image, name, address, phone_number, description');
-            $this->datatables->add_column('image', "<center><img width='100px' src='".base_url()."assets/foto/$1'></img></center>", 'image');
-            $this->datatables->add_column('delete', anchor('main/delete_resto/$1', 'Hapus', array('class' => 'btn btn-danger btn-sm')), 'id');
-            $this->datatables->add_column('edit', anchor('main/edit_resto/$1', 'Edit', array('class' => 'btn btn-warning btn-sm')), 'id');
-            $this->datatables->from('culinary');
-            return print_r($this->datatables->generate());
-        }
 
         public function delete_resto($id){
             return $this->db->delete('restaurant', array('id' => $id));
@@ -82,8 +58,38 @@
             $this->db->update($table, $data);
         }
 
-        public function input_news($data){
+        //CRUD News
+
+        public function create_news($data){
             return $this->db->insert('news', $data);
+        }
+
+        public function read_news(){
+            $this->load->library('datatables');
+            $this->datatables->select('id, image, title, author, date, location, category, description');
+            $this->datatables->add_column('image', "<center><img width='100px' src='".base_url()."assets/foto/$1'></img></center>", 'image');
+            $this->datatables->add_column('delete', anchor('main/delete_resto/$1', 'Hapus', array('class' => 'btn btn-danger btn-sm')), 'id');
+            $this->datatables->add_column('edit', anchor('main/edit_resto/$1', 'Edit', array('class' => 'btn btn-warning btn-sm')), 'id');
+            $this->datatables->from('news');
+            return print_r($this->datatables->generate());
+        }
+
+        //CRUD Culinary
+
+        public function create_culinary($data){
+            return $this->db->insert('culinary', $data);
+        }
+        public function read_culinary(){
+            $this->load->library('datatables');
+            $this->datatables->select('id, code, image, name, address, phone_number, description');
+            $this->datatables->add_column('image', "<center><img width='100px' height='60px' src='".base_url()."assets/foto/$1'></img></center>", 'image');
+            $this->datatables->add_column('delete', anchor('main/delete_culinary/$1', 'Hapus', array('class' => 'btn btn-danger btn-sm')), 'id');
+            $this->datatables->add_column('edit', anchor('main/edit_resto/$1', 'Edit', array('class' => 'btn btn-warning btn-sm')), 'id');
+            $this->datatables->from('culinary');
+            return print_r($this->datatables->generate());
+        }
+        public function delete_culinary($id){
+            return $this->db->delete('culinary', array('id' => $id));
         }
     }
 

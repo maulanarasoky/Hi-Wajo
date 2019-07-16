@@ -334,6 +334,9 @@
                             <li><a href="news"><i class="icon icon-note-important light-green-text"></i>
                                 News</a>
                             </li>
+                            <li><a href="culinary"><i class="icon icon-note-important light-green-text"></i>
+                                Culinary</a>
+                            </li>
                             <li><a href="form-bootstrap-validations.html"><i class="icon icon-note-important light-green-text"></i>
                                     Form Validation (Bootstrap)</a>
                             </li>
@@ -650,7 +653,7 @@
                             <div class="card-body">
                                 <?php echo $this->session->flashdata('msg'); ?>
                                 <div class="card-title">
-                                    <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#newsModal">Add News</button>
+                                    <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#newsModal">Add Culinary</button>
                                 </div>
                                 <table class="table table-bordered table-hover" id="table">
                                     <thead>
@@ -682,31 +685,20 @@
                         <form method="POST" id="add_news">
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input type="text" class="form-control" name="title" required>
-                                    <label class="form-label">Title</label>
+                                    <input type="text" class="form-control" name="name" required>
+                                    <label class="form-label">Name</label>
                                 </div>
                             </div>
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input type="text" class="form-control" name="author" required>
-                                    <label class="form-label">Author</label>
+                                    <input type="text" class="form-control" name="address" required>
+                                    <label class="form-label">Address</label>
                                 </div>
                             </div>
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input type="text" class="form-control" name="location" required>
-                                    <label class="form-label">Location</label>
-                                </div>
-                            </div>
-                            <div class="form-group form-float">
-                                <div class="form-line">
-                                    <select class="form-control" name="category" required>
-                                        <option value="Health">Health</option>
-                                        <option value="Tech">Tech</option>
-                                        <option value="Food">Food</option>
-                                        <option value="Travel">Travel</option>
-                                    </select>
-                                    <label class="form-label">Category</label>
+                                    <input type="number" class="form-control" name="phone_number" required>
+                                    <label class="form-label">Phone Number</label>
                                 </div>
                             </div>
                             <div class="form-group form-float">
@@ -717,7 +709,7 @@
                             </div>
                             <div class="form-group form-float">
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" name="image" aria-describedby="inputGroupFileAddon01" required>
+                                    <input type="file" class="custom-file-input" name="image" aria-describedby="inputGroupFileAddon01">
                                     <label class="custom-file-label" for="inputGroupFile01">Select Image</label>
                                 </div>
                             </div>
@@ -726,6 +718,22 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        Confirm Delete
+                    </div>
+                    <div class="modal-body">
+                        Are you sure ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-danger btn-ok" id='delete'>Delete</button>
                     </div>
                 </div>
             </div>
@@ -802,7 +810,7 @@
                 var formData = new FormData(form);
 
                 $.ajax({
-                    url: "<?php echo site_url('main/create_news'); ?>",
+                    url: "<?php echo site_url('main/create_culinary'); ?>",
                     method: 'POST',
                     data: formData,
                     contentType:false,

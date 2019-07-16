@@ -320,6 +320,9 @@
                     <li><a href="<?php echo site_url('main/news'); ?>"><i class="icon icon-note-important light-green-text"></i>
                         News</a>
                     </li>
+                    <li><a href="<?php echo site_url('main/culinary'); ?>"><i class="icon icon-note-important light-green-text"></i>
+                        Culinary</a>
+                    </li>
                     <li><a href="form-bootstrap-validations.html"><i class="icon icon-note-important light-green-text"></i>
                         Form Validation (Bootstrap)</a>
                     </li>

@@ -142,7 +142,7 @@ class Main extends CI_Controller{
     }
 
     public function read_restaurant(){
-        $this->main_model->restaurant_datatables();
+        $this->main_model->read_restaurant();
     }
 
     public function update_restaurant($id){
@@ -210,7 +210,7 @@ class Main extends CI_Controller{
                     'category' => ucwords(strtolower($this->input->post('category'))),
                     'description' => ucwords(strtolower($this->input->post('description')))
                 );
-                $insert = $this->main_model->input_news($data_content);
+                $insert = $this->main_model->create_news($data_content);
                 if($insert == TRUE){
                     $response = array(
                         'status' => 'success',
@@ -240,17 +240,16 @@ class Main extends CI_Controller{
     }
 
     public function read_news(){
-        $this->main_model->news_datatables();
+        $this->main_model->read_news();
     }
 
     //Culinary
 
     public function create_culinary(){
         // $this->form_validation->set_rules('image', 'image', 'callback_file_check');
-        $this->form_validation->set_rules('title', 'title', 'required');
-        $this->form_validation->set_rules('author', 'author', 'required');
-        $this->form_validation->set_rules('location', 'location', 'required');
-        $this->form_validation->set_rules('category', 'category', 'required');
+        $this->form_validation->set_rules('name', 'name', 'required');
+        $this->form_validation->set_rules('address', 'address', 'required');
+        $this->form_validation->set_rules('phone_number', 'phone_number', 'required');
         $this->form_validation->set_rules('description', 'description', 'required');
         // print_r($_FILES);
         if($this->form_validation->run() == true){
@@ -268,24 +267,25 @@ class Main extends CI_Controller{
 
             if($this->upload->do_upload('image')){
                 $data_image = array('upload_image' => $this->upload->data());
+                $random_code = $this->random_code();
                 $data_content = array(
                     'image' => $data_image['upload_image']['file_name'],
-                    'title' => ucwords(strtolower($this->input->post('title'))),
-                    'author' => ucwords(strtolower($this->input->post('author'))),
-                    'location' => ucwords(strtolower($this->input->post('location'))),
-                    'category' => ucwords(strtolower($this->input->post('category'))),
+                    'code' => $random_code,
+                    'name' => ucwords(strtolower($this->input->post('name'))),
+                    'address' => ucwords(strtolower($this->input->post('address'))),
+                    'phone_number' => ucwords(strtolower($this->input->post('phone_number'))),
                     'description' => ucwords(strtolower($this->input->post('description')))
                 );
-                $insert = $this->main_model->input_news($data_content);
+                $insert = $this->main_model->create_culinary($data_content);
                 if($insert == TRUE){
                     $response = array(
                         'status' => 'success',
-                        'message' => 'News has been Inserted Successfully !'
+                        'message' => 'Place has been Inserted Successfully !'
                     );
                 } else {
                     $response = array(
                         'status' => 'errors',
-                        'message' => 'News has been Inserted Unsuccessfully !'
+                        'message' => 'Place has been Inserted Unsuccessfully !'
                     );
                 }
             }else {
@@ -306,7 +306,12 @@ class Main extends CI_Controller{
     }
 
     public function read_culinary(){
-        $this->main_model->culinary_datatables();
+        $this->main_model->read_culinary();
+    }
+
+    public function delete_culinary($id){
+        $this->main_model->delete_culinary($id);
+        redirect('main/culinary');
     }
 
 
