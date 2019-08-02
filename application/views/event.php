@@ -347,8 +347,6 @@
                             </li>
                             <li><a href="panel-element-tags.html"><i class="icon  icon-tags3 light-green-text"></i>Tags</a>
                             </li>
-                            <li><a href="restaurant_list"><i class="icon icon-table light-green-text"></i>Restaurant List</a>
-                            </li>
                         </ul>
                     </li>
                     <li class="treeview"><a href="#">
@@ -630,7 +628,7 @@
                         <div class="col">
                             <h3 class="my-3">
                                 <i class="icon icon-notifications_active"></i>
-                                Restaurant<span class="s-14"></span>
+                                Event<span class="s-14"></span>
                             </h3>
                         </div>
                     </div>
@@ -642,18 +640,25 @@
                         <div class="card no-b">
                             <div class="card-body">
                                 <?php echo $this->session->flashdata('msg'); ?>
+                                <div class="alert alert-success" role="alert" id="success">
+                                </div>
+                                <div class="alert alert-danger" role="alert" id="delete-success">
+                                </div>
                                 <div class="card-title">
-                                    <button type="button" class="btn btn-outline-danger" onclick="create_restaurant();">Add Restaurant</button>
+                                    <button type="button" class="btn btn-outline-danger" onclick="create_event();">Add Event</button>
                                 </div>
                                 <table class="table table-bordered table-hover" id="table" style="width:100%;">
                                     <thead>
                                         <tr>
                                             <th>Image</th>
-                                            <th style="width:20%;">Code</th>
-                                            <th style="width:20%;">Name</th>
-                                            <th style="width:20%;">Address</th>
-                                            <th>Phone Number</th>
-                                            <th style="width:20%;">Description</th>
+                                            <th style="width:10%;">Title</th>
+                                            <th style="width:10%;">Date</th>
+                                            <th style="width:10%;">Location</th>
+                                            <th>Ticket</th>
+                                            <th style="width:10%;">Organizer</th>
+                                            <th style="width:10%;">Description</th>
+                                            <th style="width:10%;">Status</th>
+                                            <th style="width:10%;">Users</th>
                                             <th style="width:20%;">Action</th>
                                         </tr>
                                     </thead>
@@ -673,22 +678,37 @@
                     <div class="modal-body">
                         <form method="POST" id="add_news">
                             <input type="hidden" name="id" />
+                            <div class="alert alert-danger" role="alert" id="danger">
+                                
+                            </div>
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input type="text" class="form-control" name="name" required>
-                                    <label class="form-label">Name</label>
+                                    <input type="text" class="form-control" name="title" required>
+                                    <label class="form-label">Title</label>
                                 </div>
                             </div>
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input type="text" class="form-control" name="address" required>
-                                    <label class="form-label">Address</label>
+                                    <input type="date" class="form-control" name="date" required>
+                                    <label class="form-label">Date</label>
                                 </div>
                             </div>
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input type="number" class="form-control" name="phone_number" required>
-                                    <label class="form-label">Phone Number</label>
+                                    <input type="text" class="form-control" name="location" required>
+                                    <label class="form-label">Location</label>
+                                </div>
+                            </div>
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" name="ticket" required>
+                                    <label class="form-label">Ticket (person)</label>
+                                </div>
+                            </div>
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" name="organizer" required>
+                                    <label class="form-label">Organizer</label>
                                 </div>
                             </div>
                             <div class="form-group form-float">
@@ -725,7 +745,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger btn-ok" name="delete" onclick="delete_restaurant(this.value)">Delete</button>
+                    <button type="button" class="btn btn-danger btn-ok" name="delete" onclick="delete_event(this.value)">Delete</button>
                 </div>
             </div>
         </div>
@@ -751,6 +771,9 @@
         var save_method;
         $(document).ready(function() {
 
+            $('#success').hide();
+            $('#delete-success').hide();
+
             //datatables
             table = $('#table').DataTable({ 
  
@@ -760,7 +783,7 @@
 
                 // Load data for the table's content from an Ajax source
                 "ajax": {
-                    "url": "<?php echo site_url('main/read_restaurant')?>",
+                    "url": "<?php echo site_url('main/read_event')?>",
                     "type": "POST"
                 },
 
@@ -773,16 +796,17 @@
                 ],
             });
         });
-        function create_restaurant()
+        function create_event()
         {
             save_method = 'add';
             $('#add_news')[0].reset(); // reset form on modals
             $('.form-group').removeClass('has-error'); // clear error class
             // $('.help-block').empty(); // clear error string
-            $('#newsModal').modal('show'); // show bootstrap modal
+            $('#newsModal').modal('show');
+            $('#danger').hide(); // show bootstrap modal
             // $('.modal-title').text('Add Person'); // Set Title to Bootstrap modal title
         }
-        function edit_restaurant(id)
+        function edit_event(id)
         {
             save_method = 'update';
             $('#add_news')[0].reset(); // reset form on modals
@@ -791,17 +815,22 @@
         
             //Ajax Load data from ajax
             $.ajax({
-                url : "<?php echo site_url('main/edit_restaurant')?>/" + id,
+                url : "<?php echo site_url('main/edit_event')?>/" + id,
                 type: "GET",
                 dataType: "JSON",
                 success: function(data)
                 {
         
+                    $('#danger').show();
+                    $('#danger').html('Silahkan upload ulang poster');
                     $('[name="id"]').val(data.id);
-                    $('[name="name"]').val(data.name);
-                    $('[name="address"]').val(data.address);
-                    $('[name="phone_number"]').val(data.phone_number);
+                    $('[name="title"]').val(data.title);
+                    $('[name="date"]').val(data.date);
+                    $('[name="location"]').val(data.location);
+                    $('[name="ticket"]').val(data.ticket);
+                    $('[name="organizer"]').val(data.organizer);
                     $('[name="description"]').val(data.description);
+                    $('[name="status"]').val(data.status);
                     // $('[name="image"]').val(data.image);
                     // $('[name="dob"]').datepicker('update',data.dob);
                     $('#newsModal').modal('show'); // show bootstrap modal when complete loaded
@@ -815,19 +844,19 @@
             });
         }
 
-        function get_data_delete_restaurant(id)
+        function get_data_delete_event(id)
         {
         
             //Ajax Load data from ajax
             $.ajax({
-                url : "<?php echo site_url('main/edit_restaurant')?>/" + id,
+                url : "<?php echo site_url('main/edit_event')?>/" + id,
                 type: "GET",
                 dataType: "JSON",
                 success: function(data)
                 {
         
                     $('[name="delete"]').val(data.id);
-                    $('[name="delete_body"]').html(data.name);
+                    $('[name="delete_body"]').html(data.title);
                     $('#confirm-delete').modal('show');
         
                 },
@@ -845,9 +874,9 @@
             var url;
         
             if(save_method == 'add') {
-                url = "<?php echo site_url('main/create_restaurant')?>";
+                url = "<?php echo site_url('main/create_event')?>";
             } else {
-                url = "<?php echo site_url('main/update_restaurant')?>";
+                url = "<?php echo site_url('main/update_event')?>";
             }
 
             var form = $('#add_news')[0];
@@ -868,6 +897,11 @@
                     {
                         $('#newsModal').modal('hide');
                         table.ajax.reload();
+                        $('#success').show();
+                        $('#success').html('Upload data success !!').css({"text-align" : "center", "font-weight" : "bold"});
+                    } else if(data.status == "errors"){
+                        $('#danger').show();
+                        $('#danger').html(data.message);
                     }
                     $('#btnSave').text('save'); //change button text
                     $('#btnSave').attr('disabled',false); //set button enable 
@@ -884,18 +918,20 @@
             });
         }
 
-        function delete_restaurant(id)
+        function delete_event(id)
         {
             var table = $('#table').DataTable();
                     // ajax delete data to database
             $.ajax({
-                url : "<?php echo site_url('main/delete_restaurant')?>/"+id,
+                url : "<?php echo site_url('main/delete_event')?>/"+id,
                 type: "POST",
                 dataType: "JSON",
                 success: function(data)
                 {
                     $('#confirm-delete').modal('hide');
                     table.ajax.reload();
+                    $('#delete-success').show();
+                    $('#delete-success').html('Delete Success !!').css({"text-align" : "center", "font-weight" : "bold"});
 
                 },
                 error: function (jqXHR, textStatus, errorThrown)

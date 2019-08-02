@@ -141,41 +141,39 @@
                 </div>
                 <ul class="sidebar-menu">
                     <li class="header"><strong>MAIN NAVIGATION</strong></li>
+                    <li class="treeview"><a href="<?php echo base_url(); ?>">
+                        <i class="icon icon-sailing-boat-water purple-text s-18"></i><span>Dashboard</span></a>
+                    </li>
                     <li class="treeview"><a href="#">
-                            <i class="icon icon-sailing-boat-water purple-text s-18"></i> <span>Dashboard</span> <i class="icon icon-angle-left s-18 pull-right"></i>
+                            <i class="icon icon icon-package blue-text s-18"></i>
+                            <span>Main Features</span>
+                            <span class="badge r-3 badge-primary pull-right">3</span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="<?php echo base_url(); ?>"><i class="icon icon-folder5"></i>Panel Dashboard 1</a>
-                            </li>
-                            <li><a href="panel-page-dashboard1-rtl.html"><i class="icon icon-folder5"></i>Panel Dashboard 1 - RTL</a>
-                            </li>
-                            <li><a href="panel-page-dashboard2.html"><i class="icon icon-folder5"></i>Panel Dashboard 2</a>
-                            </li>
-                            <li><a href="panel-page-dashboard3.html"><i class="icon icon-folder5"></i>Panel Dashboard 3</a>
-                            </li>
-                            <li><a href="panel-page-dashboard4.html"><i class="icon icon-folder5"></i>Panel Dashboard 4</a>
-                            </li>
-                            <li><a href="panel-page-dashboard5.html"><i class="icon icon-folder5"></i>Panel Dashboard 5</a>
-                            </li>
-                            <li><a href="panel-page-dashboard6.html"><i class="icon icon-folder5"></i>Panel Dashboard 6</a>
-                            </li>
-                            <li><a href="panel-page-dashboard7.html"><i class="icon icon-folder5"></i>Panel Dashboard 7</a></li>
-                            <li><a href="panel-page-dashboard9.html"><i class="icon icon-folder5"></i>Panel Dashboard 9</a></li>
-                            <li><a href="panel-page-dashboard10.html"><i class="icon icon-folder5"></i>Panel Dashboard 10</a></li>
-                            <li><a href="panel-page-dashboard11.html"><i class="icon icon-folder5"></i>Panel Dashboard 11</a></li>
+                            <li><a href="complaint"><i class="icon icon-circle-o"></i>Complaint</a></li>
+                            <li><a href="event"><i class="icon icon-circle-o"></i>Event</a></li>
+                            <li><a href="news"><i class="icon icon-circle-o"></i>News</a></li>
                         </ul>
                     </li>
                     <li class="treeview"><a href="#">
                             <i class="icon icon icon-package blue-text s-18"></i>
                             <span>Products</span>
-                            <span class="badge r-3 badge-primary pull-right">4</span>
+                            <span class="badge r-3 badge-primary pull-right">12</span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="panel-page-products.html"><i class="icon icon-circle-o"></i>All Products</a>
-                            </li>
-                            <li><a href="panel-page-products-create.html"><i class="icon icon-add"></i>Add
-                                    New </a>
-                            </li>
+                            <li><a href="bank_finance"><i class="icon icon-circle-o"></i>Bank and Finance</a></li>
+                            <li><a href="cafe"><i class="icon icon-circle-o"></i>Cafe</a></li>
+                            <li><a href="culinary"><i class="icon icon-circle-o"></i>Culinary</a></li>
+                            <li><a href="education"><i class="icon icon-circle-o"></i>Education</a></li>
+                            <li><a href="entertainment"><i class="icon icon-circle-o"></i>Entertainment</a></li>
+                            <li><a href="government"><i class="icon icon-circle-o"></i>Government</a></li>
+                            <li><a href="health"><i class="icon icon-circle-o"></i>Health</a></li>
+                            <li><a href="housing"><i class="icon icon-circle-o"></i>Housing</a></li>
+                            <li><a href="market"><i class="icon icon-circle-o"></i>Market</a></li>
+                            <li><a href="restaurant"><i class="icon icon-circle-o"></i>Restaurant</a></li>
+                            <li><a href="sports"><i class="icon icon-circle-o"></i>Sports</a></li>
+                            <li><a href="travel_transportation"><i class="icon icon-circle-o"></i>Travel and Transportation</a></li>
+                            <li><a href="tourism"><i class="icon icon-circle-o"></i>Tourism</a></li>
                         </ul>
                     </li>
                     <li class="treeview"><a href="#"><i class="icon icon-account_box light-green-text s-18"></i>Users<i class="icon icon-angle-left s-18 pull-right"></i></a>
@@ -328,15 +326,6 @@
                             <li><a href="panel-element-forms.html"><i class="icon icon-wpforms light-green-text"></i>Bootstrap
                                     Inputs</a>
                             </li>
-                            <li><a href="restaurant"><i class="icon icon-note-important light-green-text"></i>
-                                Restaurant</a>
-                            </li>
-                            <li><a href="news"><i class="icon icon-note-important light-green-text"></i>
-                                News</a>
-                            </li>
-                            <li><a href="culinary"><i class="icon icon-note-important light-green-text"></i>
-                                Culinary</a>
-                            </li>
                             <li><a href="form-bootstrap-validations.html"><i class="icon icon-note-important light-green-text"></i>
                                     Form Validation (Bootstrap)</a>
                             </li>
@@ -357,8 +346,6 @@
                             <li><a href="panel-element-select2.html"><i class="icon  icon-one-finger-click light-green-text"></i>Select 2</a>
                             </li>
                             <li><a href="panel-element-tags.html"><i class="icon  icon-tags3 light-green-text"></i>Tags</a>
-                            </li>
-                            <li><a href="restaurant_list"><i class="icon icon-table light-green-text"></i>Restaurant List</a>
                             </li>
                         </ul>
                     </li>
@@ -615,14 +602,15 @@
                                                 <div class="pt-1">Apps</div>
                                             </a>
                                         </div>
-                                        <div class="col"><a href="#">
+                                        <div class="col">
+                                            <a href="#">
                                                 <i class="icon-beach_access pink lighten-1 avatar  r-5"></i>
                                                 <div class="pt-1">Profile</div>
                                             </a></div>
                                         <div class="col">
-                                            <a href="#">
+                                            <a href="<?php echo site_url('main/logout'); ?>">
                                                 <i class="icon-perm_data_setting indigo lighten-2 avatar  r-5"></i>
-                                                <div class="pt-1">Settings</div>
+                                                <div class="pt-1">Logout</div>
                                             </a>
                                         </div>
                                     </div>
@@ -653,20 +641,19 @@
                             <div class="card-body">
                                 <?php echo $this->session->flashdata('msg'); ?>
                                 <div class="card-title">
-                                    <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#newsModal">Add News</button>
+                                    <button type="button" class="btn btn-outline-danger" onclick="create_news();">Add News</button>
                                 </div>
-                                <table class="table table-bordered table-hover" id="table">
+                                <table class="table table-bordered table-hover" id="table" style="width:100%;">
                                     <thead>
                                         <tr>
                                             <th>Image</th>
-                                            <th>Title</th>
-                                            <th>Author</th>
-                                            <th>Date</th>
-                                            <th>Location</th>
+                                            <th style="width:20%;">Title</th>
+                                            <th style="width:10%;">Author</th>
+                                            <th style="width:20%;">Date</th>
+                                            <th style="width:10%;">Location</th>
                                             <th>Category</th>
-                                            <th>Description</th>
-                                            <th>Edit</th>
-                                            <th>Delete</th>
+                                            <th style="width:20%;">Description</th>
+                                            <th style="width:20%;">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -684,6 +671,7 @@
                 <div class="modal-content">
                     <div class="modal-body">
                         <form method="POST" id="add_news">
+                            <input type="hidden" name="id" />
                             <div class="form-group form-float">
                                 <div class="form-line">
                                     <input type="text" class="form-control" name="title" required>
@@ -703,15 +691,14 @@
                                 </div>
                             </div>
                             <div class="form-group form-float">
-                                <div class="form-line">
-                                    <select class="form-control" name="category" required>
-                                        <option value="Health">Health</option>
-                                        <option value="Tech">Tech</option>
-                                        <option value="Food">Food</option>
-                                        <option value="Travel">Travel</option>
-                                    </select>
-                                    <label class="form-label">Category</label>
-                                </div>
+                                <select class="form-control" id="exampleFormControlSelect1" name="category">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </select>
+                                <label for="exampleFormControlSelect1">Category</label>
                             </div>
                             <div class="form-group form-float">
                                 <div class="form-line">
@@ -725,12 +712,29 @@
                                     <label class="custom-file-label" for="inputGroupFile01">Select Image</label>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary" id="btnSave" onclick="save();">Submit</button>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Are you sure ?
+                </div>
+                <div class="modal-body">
+                    <p>Delete <span style="font-weight:bold;" name="delete_body"></span> ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger btn-ok" name="delete" onclick="delete_news(this.value)">Delete</button>
                 </div>
             </div>
         </div>
@@ -753,79 +757,163 @@
 
     <script type="text/javascript">
         var table;
+        var save_method;
         $(document).ready(function() {
 
             //datatables
-            table = $('#table').DataTable({
-                "processing": true,
-                "serverSide": true,
-                "order": [],
+            table = $('#table').DataTable({ 
+ 
+                "processing": true, //Feature control the processing indicator.
+                "serverSide": true, //Feature control DataTables' server-side processing mode.
+                "order": [], //Initial no order.
+
+                // Load data for the table's content from an Ajax source
                 "ajax": {
-                    "url": '<?php echo site_url('main/read_news'); ?>',
+                    "url": "<?php echo site_url('main/read_news')?>",
                     "type": "POST"
                 },
-                "columns": [{
-                        "data": "image",
-                        width: 100
+
+                //Set column definition initialisation properties.
+                "columnDefs": [
+                    { 
+                        "targets": [ -1 ], //last column
+                        "orderable": false, //set not orderable
                     },
-                    {
-                        "data": "title",
-                        width: 100
-                    },
-                    {
-                        "data": "author",
-                        width: 100
-                    },
-                    {
-                        "data": "date",
-                        width: 100
-                    },
-                    {
-                        "data": "location",
-                        width: 100
-                    },
-                    {
-                        "data": "category",
-                        width: 100
-                    },
-                    {
-                        "data": "description",
-                        width: 100
-                    },
-                    {
-                        "data": "edit"
-                    },
-                    {
-                        "data": "delete"
-                    }
                 ],
             });
-            
-            $('#add_news').on('submit', function(e){
-
-                var table = $('#table').DataTable();
-
-                e.preventDefault();
-                var form = $('#add_news')[0];
-                var formData = new FormData(form);
-
-                $.ajax({
-                    url: "<?php echo site_url('main/create_news'); ?>",
-                    method: 'POST',
-                    data: formData,
-                    contentType:false,
-                    processData:false,
-                    success: function(data){
-                        console.log(data);
-                        if(data.status == 'success'){
-                            $('#add_news')[0].reset();
-                            $('#newsModal').modal('toggle');
-                            table.ajax.reload();
-                        }
-                    }
-                });
-            });
         });
+        function create_news()
+        {
+            save_method = 'add';
+            $('#add_news')[0].reset(); // reset form on modals
+            $('.form-group').removeClass('has-error'); // clear error class
+            // $('.help-block').empty(); // clear error string
+            $('#newsModal').modal('show'); // show bootstrap modal
+            // $('.modal-title').text('Add Person'); // Set Title to Bootstrap modal title
+        }
+        function edit_news(id)
+        {
+            save_method = 'update';
+            $('#add_news')[0].reset(); // reset form on modals
+            $('.form-group').removeClass('has-error'); // clear error class
+            // $('.help-block').empty(); // clear error string
+        
+            //Ajax Load data from ajax
+            $.ajax({
+                url : "<?php echo site_url('main/edit_news')?>/" + id,
+                type: "GET",
+                dataType: "JSON",
+                success: function(data)
+                {
+        
+                    $('[name="id"]').val(data.id);
+                    $('[name="title"]').val(data.title);
+                    $('[name="author"]').val(data.author);
+                    $('[name="location"]').val(data.location);
+                    $('[name="category"]').val(data.category);
+                    $('[name="description"]').val(data.content);
+                    // $('[name="image"]').val(data.image);
+                    // $('[name="dob"]').datepicker('update',data.dob);
+                    $('#newsModal').modal('show'); // show bootstrap modal when complete loaded
+                    // $('.modal-title').text('Edit Person'); // Set title to Bootstrap modal title
+        
+                },
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                    alert('Error get data from ajax');
+                }
+            });
+        }
+
+        function get_data_delete_news(id)
+        {
+        
+            //Ajax Load data from ajax
+            $.ajax({
+                url : "<?php echo site_url('main/edit_news')?>/" + id,
+                type: "GET",
+                dataType: "JSON",
+                success: function(data)
+                {
+        
+                    $('[name="delete"]').val(data.id);
+                    $('[name="delete_body"]').html(data.title);
+                    $('#confirm-delete').modal('show');
+        
+                },
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                    alert('Error get data from ajax');
+                }
+            });
+        }
+
+        function save()
+        {
+            $('#btnSave').text('saving...'); //change button text
+            $('#btnSave').attr('disabled',true); //set button disable 
+            var url;
+        
+            if(save_method == 'add') {
+                url = "<?php echo site_url('main/create_news')?>";
+            } else {
+                url = "<?php echo site_url('main/update_news')?>";
+            }
+
+            var form = $('#add_news')[0];
+            var formData = new FormData(form);
+        
+            // ajax adding data to database
+            $.ajax({
+                url : url,
+                type: "POST",
+                data: formData,
+                contentType:false,
+                processData:false,
+                success: function(data)
+                {
+                    console.log(data);
+        
+                    if(data.status == "success") //if success close modal and reload ajax table
+                    {
+                        $('#newsModal').modal('hide');
+                        table.ajax.reload();
+                    }
+                    $('#btnSave').text('save'); //change button text
+                    $('#btnSave').attr('disabled',false); //set button enable 
+        
+        
+                },
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                    alert('Error adding / update data');
+                    $('#btnSave').text('save'); //change button text
+                    $('#btnSave').attr('disabled',false); //set button enable 
+        
+                }
+            });
+        }
+
+        function delete_news(id)
+        {
+            var table = $('#table').DataTable();
+                    // ajax delete data to database
+            $.ajax({
+                url : "<?php echo site_url('main/delete_news')?>/"+id,
+                type: "POST",
+                dataType: "JSON",
+                success: function(data)
+                {
+                    $('#confirm-delete').modal('hide');
+                    table.ajax.reload();
+
+                },
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                    alert('Error deleting data');
+                }
+            });
+        }
     </script>
 </body>
 

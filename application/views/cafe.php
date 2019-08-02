@@ -347,8 +347,6 @@
                             </li>
                             <li><a href="panel-element-tags.html"><i class="icon  icon-tags3 light-green-text"></i>Tags</a>
                             </li>
-                            <li><a href="restaurant_list"><i class="icon icon-table light-green-text"></i>Restaurant List</a>
-                            </li>
                         </ul>
                     </li>
                     <li class="treeview"><a href="#">
@@ -630,7 +628,7 @@
                         <div class="col">
                             <h3 class="my-3">
                                 <i class="icon icon-notifications_active"></i>
-                                Restaurant<span class="s-14"></span>
+                                Cafe<span class="s-14"></span>
                             </h3>
                         </div>
                     </div>
@@ -643,7 +641,7 @@
                             <div class="card-body">
                                 <?php echo $this->session->flashdata('msg'); ?>
                                 <div class="card-title">
-                                    <button type="button" class="btn btn-outline-danger" onclick="create_restaurant();">Add Restaurant</button>
+                                    <button type="button" class="btn btn-outline-danger" onclick="create_cafe();">Add Cafe</button>
                                 </div>
                                 <table class="table table-bordered table-hover" id="table" style="width:100%;">
                                     <thead>
@@ -725,7 +723,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger btn-ok" name="delete" onclick="delete_restaurant(this.value)">Delete</button>
+                    <button type="button" class="btn btn-danger btn-ok" name="delete" onclick="delete_cafe(this.value)">Delete</button>
                 </div>
             </div>
         </div>
@@ -760,7 +758,7 @@
 
                 // Load data for the table's content from an Ajax source
                 "ajax": {
-                    "url": "<?php echo site_url('main/read_restaurant')?>",
+                    "url": "<?php echo site_url('main/read_cafe')?>",
                     "type": "POST"
                 },
 
@@ -773,7 +771,7 @@
                 ],
             });
         });
-        function create_restaurant()
+        function create_cafe()
         {
             save_method = 'add';
             $('#add_news')[0].reset(); // reset form on modals
@@ -782,7 +780,7 @@
             $('#newsModal').modal('show'); // show bootstrap modal
             // $('.modal-title').text('Add Person'); // Set Title to Bootstrap modal title
         }
-        function edit_restaurant(id)
+        function edit_cafe(id)
         {
             save_method = 'update';
             $('#add_news')[0].reset(); // reset form on modals
@@ -791,7 +789,7 @@
         
             //Ajax Load data from ajax
             $.ajax({
-                url : "<?php echo site_url('main/edit_restaurant')?>/" + id,
+                url : "<?php echo site_url('main/edit_cafe')?>/" + id,
                 type: "GET",
                 dataType: "JSON",
                 success: function(data)
@@ -815,12 +813,12 @@
             });
         }
 
-        function get_data_delete_restaurant(id)
+        function get_data_delete_cafe(id)
         {
         
             //Ajax Load data from ajax
             $.ajax({
-                url : "<?php echo site_url('main/edit_restaurant')?>/" + id,
+                url : "<?php echo site_url('main/edit_cafe')?>/" + id,
                 type: "GET",
                 dataType: "JSON",
                 success: function(data)
@@ -845,9 +843,9 @@
             var url;
         
             if(save_method == 'add') {
-                url = "<?php echo site_url('main/create_restaurant')?>";
+                url = "<?php echo site_url('main/create_cafe')?>";
             } else {
-                url = "<?php echo site_url('main/update_restaurant')?>";
+                url = "<?php echo site_url('main/update_cafe')?>";
             }
 
             var form = $('#add_news')[0];
@@ -884,12 +882,12 @@
             });
         }
 
-        function delete_restaurant(id)
+        function delete_cafe(id)
         {
             var table = $('#table').DataTable();
                     // ajax delete data to database
             $.ajax({
-                url : "<?php echo site_url('main/delete_restaurant')?>/"+id,
+                url : "<?php echo site_url('main/delete_cafe')?>/"+id,
                 type: "POST",
                 dataType: "JSON",
                 success: function(data)
