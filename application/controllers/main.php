@@ -392,7 +392,8 @@ class Main extends CI_Controller
         echo json_encode($output);
     }
 
-    public function news_api(){
+    public function news_api()
+    {
         $query = $this->model->api_news();
         echo json_encode($query);
     }
@@ -572,7 +573,8 @@ class Main extends CI_Controller
         echo json_encode($output);
     }
 
-    public function culinary_api(){
+    public function culinary_api()
+    {
         $query = $this->model->api_culinary();
         echo json_encode($query);
     }
@@ -752,7 +754,8 @@ class Main extends CI_Controller
         echo json_encode($output);
     }
 
-    public function housing_api(){
+    public function housing_api()
+    {
         $query = $this->model->api_housing();
         echo json_encode($query);
     }
@@ -932,7 +935,8 @@ class Main extends CI_Controller
         echo json_encode($output);
     }
 
-    public function entertainment_api(){
+    public function entertainment_api()
+    {
         $query = $this->model->api_entertainment();
         echo json_encode($query);
     }
@@ -1112,7 +1116,8 @@ class Main extends CI_Controller
         echo json_encode($output);
     }
 
-    public function market_api(){
+    public function market_api()
+    {
         $query = $this->model->api_market();
         echo json_encode($query);
     }
@@ -1292,7 +1297,8 @@ class Main extends CI_Controller
         echo json_encode($output);
     }
 
-    public function education_api(){
+    public function education_api()
+    {
         $query = $this->model->api_education();
         echo json_encode($query);
     }
@@ -1653,7 +1659,8 @@ class Main extends CI_Controller
         echo json_encode($output);
     }
 
-    public function cafe_api(){
+    public function cafe_api()
+    {
         $query = $this->model->api_cafe();
         echo json_encode($query);
     }
@@ -1833,7 +1840,8 @@ class Main extends CI_Controller
         echo json_encode($output);
     }
 
-    public function tourism_api(){
+    public function tourism_api()
+    {
         $query = $this->model->api_tourism();
         echo json_encode($query);
     }
@@ -2013,7 +2021,8 @@ class Main extends CI_Controller
         echo json_encode($output);
     }
 
-    public function sports_api(){
+    public function sports_api()
+    {
         $query = $this->model->api_sports();
         echo json_encode($query);
     }
@@ -2193,7 +2202,8 @@ class Main extends CI_Controller
         echo json_encode($output);
     }
 
-    public function bank_finance_api(){
+    public function bank_finance_api()
+    {
         $query = $this->model->api_bank_finance();
         echo json_encode($query);
     }
@@ -2373,7 +2383,8 @@ class Main extends CI_Controller
         echo json_encode($output);
     }
 
-    public function travel_transportation_api(){
+    public function travel_transportation_api()
+    {
         $query = $this->model->api_travel_transportation();
         echo json_encode($query);
     }
@@ -2553,7 +2564,8 @@ class Main extends CI_Controller
         echo json_encode($output);
     }
 
-    public function government_api(){
+    public function government_api()
+    {
         $query = $this->model->api_government();
         echo json_encode($query);
     }
@@ -2787,7 +2799,7 @@ class Main extends CI_Controller
             if ($data->id_user <> 0) {
                 $check_name = $this->model->get_data_username_user_event($data->id_user)->row_array();
                 $row[] = $check_name['username'];
-            }else {
+            } else {
                 $row[] = "Admin";
             }
 
@@ -2808,7 +2820,8 @@ class Main extends CI_Controller
         echo json_encode($output);
     }
 
-    public function event_api(){
+    public function event_api()
+    {
         $query = $this->model->api_event();
         echo json_encode($query);
     }
@@ -2887,4 +2900,224 @@ class Main extends CI_Controller
         echo json_encode(array("status" => TRUE));
     }
 
+    //CRUD Event
+
+    public function complaint()
+    {
+        $username = $this->session->userdata('username');
+        if (!is_null($username)) {
+            $this->load->view('complaint');
+        } else {
+            $this->login_form();
+        }
+    }
+
+    public function create_complaint_users()
+    {
+        $this->form_validation->set_rules('title', 'title', 'required');
+        $this->form_validation->set_rules('date', 'date', 'required');
+        $this->form_validation->set_rules('location', 'location', 'required');
+        $this->form_validation->set_rules('category', 'category', 'required');
+        $this->form_validation->set_rules('description', 'description', 'required');
+        $this->form_validation->set_rules('status', 'status', 'required');
+        $this->form_validation->set_rules('finishedDescription', 'finishedDescription', 'required');
+        // print_r($_FILES);
+        if ($this->form_validation->run() == true) {
+
+            $config = array(
+                'upload_path' => "./assets/foto/",
+                'allowed_types' => "jpg|png|jpeg",
+                'overwrite' => TRUE,
+                'max_size' => "2048000",
+                'max_height' => "5000",
+                'max_width' => "5000"
+            );
+
+            $this->load->library('upload', $config);
+
+            if ($this->upload->do_upload('image')) {
+                $data_image = array('upload_image' => $this->upload->data());
+                $data_content = array(
+                    'image' => 'assets/foto/' . $data_image['upload_image']['file_name'],
+                    'title' => ucwords(strtolower($this->input->post('title'))),
+                    'location' => ucwords(strtolower($this->input->post('location'))),
+                    'category' => ucwords(strtolower($this->input->post('category'))),
+                    'description' => ucwords(strtolower($this->input->post('description'))),
+                    'status' => 'Pending',
+                    'confirm_status' => 'Belum dikonfirmasi',
+                    'id_user' => $this->model->get_data_id_user_complaint($this->session->userdata('username'))
+                );
+                $insert = $this->model->create_complaint($data_content);
+                if ($insert == TRUE) {
+                    $response = array(
+                        'status' => 'success',
+                        'message' => 'Place has been Inserted Successfully !'
+                    );
+                } else {
+                    $response = array(
+                        'status' => 'errors',
+                        'message' => 'Place has been Inserted Unsuccessfully !'
+                    );
+                }
+            } else {
+                $response = array(
+                    'status' => 'errors',
+                    'message' => $this->upload->display_errors()
+                );
+            }
+        } else {
+            $response = array(
+                'status' => 'errors',
+                'message' => validation_errors()
+            );
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($response));
+    }
+
+    public function read_complaint()
+    {
+        $list = $this->model->read_complaint();
+        $allData = array();
+        $no = $_POST['start'];
+        foreach ($list as $data) {
+            $no++;
+            $row = array();
+            $row[] = "<center><img width='100px' height='60px' src='" . base_url() . $data->image . "'></img></center>";
+            $row[] = $data->title;
+            $row[] = $data->date;
+            $row[] = $data->location;
+            $row[] = $data->category;
+            $row[] = character_limiter($data->description, 20);
+            $row[] = $data->status;
+            if ($data->id_user <> 0) {
+                $check_name = $this->model->get_data_username_user_complaint($data->id_user)->row_array();
+                $row[] = $check_name['username'];
+            } else {
+                $row[] = "Admin";
+            }
+            if ($data->confirm_status == "Belum dikonfirmasi") {
+                $row[] = '<a class="btn btn-sm btn-warning" href="javascript:void(0)" title="Konfirmasi" onclick="edit_complaint_confirm(' . "'" . $data->id . "'" . ')"><i class="glyphicon glyphicon-pencil"></i> Confirm</a>';
+            } elseif ($data->confirm_status == "Dikonfirmasi") {
+                $row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_status_complaint(' . "'" . $data->id . "'" . ')"><i class="glyphicon glyphicon-pencil"></i> Status</a>';
+            }
+
+            //add html for action
+            $row[] = '<a class="btn btn-sm btn-success" href="javascript:void(0)" title="Edit" onclick="edit_finish_complaint(' . "'" . $data->id . "'" . ')"><i class="glyphicon glyphicon-pencil"></i> Bukti</a>';
+
+            $allData[] = $row;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->model->count_all_complaint(),
+            "recordsFiltered" => $this->model->count_filtered_complaint(),
+            "data" => $allData,
+        );
+        //output to json format
+        echo json_encode($output);
+    }
+
+    public function complaint_api()
+    {
+        $query = $this->model->api_complaint();
+        echo json_encode($query);
+    }
+
+    public function edit_complaint_confirm($id)
+    {
+        $change = array(
+            'confirm_status' => 'Dikonfirmasi'
+        );
+        $data = $this->model->edit_complaint_confirm(array('id' => $id), $change);
+        echo json_encode($data);
+    }
+
+    public function get_edit_status_complaint($id)
+    {
+        $data = $this->model->get_by_complaint($id);
+        echo json_encode($data);
+    }
+
+    public function update_complaint_status()
+    {
+        $change = array(
+            'status' => $this->input->post('status')
+        );
+        $data = $this->model->update_complaint_status(array('id' => $this->input->post('id')), $change);
+        if ($data == TRUE) {
+            $response = array(
+                'status' => 'success',
+                'message' => 'Update status success'
+            );
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($response));
+        }
+    }
+
+    public function get_edit_finish_complaint($id)
+    {
+        $data = $this->model->get_by_complaint($id);
+        echo json_encode($data);
+    }
+
+    public function update_complaint_finished()
+    {
+        $this->form_validation->set_rules('finished_description', 'finished_description', 'required');
+        // print_r($_FILES);
+        if ($this->form_validation->run() == true) {
+
+            $config = array(
+                'upload_path' => "./assets/foto/",
+                'allowed_types' => "jpg|png|jpeg",
+                'overwrite' => TRUE,
+                'max_size' => "2048000",
+                'max_height' => "5000",
+                'max_width' => "5000"
+            );
+
+            $this->load->library('upload', $config);
+
+            if ($this->upload->do_upload('image')) {
+                $data_image = array('upload_image' => $this->upload->data());
+                $data_content = array(
+                    'finished_image' => 'assets/foto/' . $data_image['upload_image']['file_name'],
+                    'finished_description' => $this->input->post('finished_description')
+                );
+                $insert = $this->model->update_complaint_finished(array('id' => $this->input->post('id')), $data_content);
+                if ($insert == TRUE) {
+                    $response = array(
+                        'status' => 'success',
+                        'message' => 'Place has been Inserted Successfully !'
+                    );
+                } else {
+                    $response = array(
+                        'status' => 'errors',
+                        'message' => 'Place has been Inserted Unsuccessfully !'
+                    );
+                }
+            } else {
+                $response = array(
+                    'status' => 'errors',
+                    'message' => $this->upload->display_errors()
+                );
+            }
+        } else {
+            $response = array(
+                'status' => 'errors',
+                'message' => validation_errors()
+            );
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($response));
+    }
+
+    public function delete_complaint($id)
+    {
+        $this->model->delete_complaint($id);
+        echo json_encode(array("status" => TRUE));
+    }
 }

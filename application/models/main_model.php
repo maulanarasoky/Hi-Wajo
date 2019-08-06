@@ -97,7 +97,8 @@ class Main_model extends CI_Model
         return $this->db->count_all_results();
     }
 
-    public function api_restaurant(){
+    public function api_restaurant()
+    {
         $query = $this->db->get('restaurant')->result();
         return $query;
     }
@@ -194,7 +195,8 @@ class Main_model extends CI_Model
         return $this->db->count_all_results();
     }
 
-    public function api_news(){
+    public function api_news()
+    {
         $query = $this->db->get('news')->result();
         return $query;
     }
@@ -292,7 +294,8 @@ class Main_model extends CI_Model
         return $this->db->count_all_results();
     }
 
-    public function api_culinary(){
+    public function api_culinary()
+    {
         $query = $this->db->get('culinary')->result();
         return $query;
     }
@@ -389,7 +392,8 @@ class Main_model extends CI_Model
         return $this->db->count_all_results();
     }
 
-    public function api_housing(){
+    public function api_housing()
+    {
         $query = $this->db->get('housing')->result();
         return $query;
     }
@@ -486,7 +490,8 @@ class Main_model extends CI_Model
         return $this->db->count_all_results();
     }
 
-    public function api_entertainment(){
+    public function api_entertainment()
+    {
         $query = $this->db->get('entertainment')->result();
         return $query;
     }
@@ -583,7 +588,8 @@ class Main_model extends CI_Model
         return $this->db->count_all_results();
     }
 
-    public function api_market(){
+    public function api_market()
+    {
         $query = $this->db->get('market')->result();
         return $query;
     }
@@ -680,7 +686,8 @@ class Main_model extends CI_Model
         return $this->db->count_all_results();
     }
 
-    public function api_education(){
+    public function api_education()
+    {
         $query = $this->db->get('education')->result();
         return $query;
     }
@@ -777,7 +784,8 @@ class Main_model extends CI_Model
         return $this->db->count_all_results();
     }
 
-    public function api_health(){
+    public function api_health()
+    {
         $query = $this->db->get('health')->result();
         return $query;
     }
@@ -874,7 +882,8 @@ class Main_model extends CI_Model
         return $this->db->count_all_results();
     }
 
-    public function api_cafe(){
+    public function api_cafe()
+    {
         $query = $this->db->get('cafe')->result();
         return $query;
     }
@@ -971,7 +980,8 @@ class Main_model extends CI_Model
         return $this->db->count_all_results();
     }
 
-    public function api_tourism(){
+    public function api_tourism()
+    {
         $query = $this->db->get('tourism')->result();
         return $query;
     }
@@ -1068,7 +1078,8 @@ class Main_model extends CI_Model
         return $this->db->count_all_results();
     }
 
-    public function api_sports(){
+    public function api_sports()
+    {
         $query = $this->db->get('sports')->result();
         return $query;
     }
@@ -1165,7 +1176,8 @@ class Main_model extends CI_Model
         return $this->db->count_all_results();
     }
 
-    public function api_bank_finance(){
+    public function api_bank_finance()
+    {
         $query = $this->db->get('bank_finance')->result();
         return $query;
     }
@@ -1263,7 +1275,8 @@ class Main_model extends CI_Model
         return $this->db->count_all_results();
     }
 
-    public function api_travel_transportation(){
+    public function api_travel_transportation()
+    {
         $query = $this->db->get('travel_transportation')->result();
         return $query;
     }
@@ -1361,7 +1374,8 @@ class Main_model extends CI_Model
         return $this->db->count_all_results();
     }
 
-    public function api_government(){
+    public function api_government()
+    {
         $query = $this->db->get('government')->result();
         return $query;
     }
@@ -1393,7 +1407,7 @@ class Main_model extends CI_Model
         $this->db->delete('government');
     }
 
-    //CRUD Government
+    //CRUD Event
 
     public function create_event($data)
     {
@@ -1446,11 +1460,13 @@ class Main_model extends CI_Model
         return $query->result();
     }
 
-    function get_data_username_user_event($id){
+    function get_data_username_user_event($id)
+    {
         return $this->db->query("SELECT username FROM users WHERE id_user = '$id' LIMIT 1");
     }
 
-    function get_data_id_user_event($username){
+    function get_data_id_user_event($username)
+    {
         return $this->db->query("SELECT id FROM users WHERE username = '$username' LIMIT 1");
     }
 
@@ -1467,7 +1483,8 @@ class Main_model extends CI_Model
         return $this->db->count_all_results();
     }
 
-    public function api_event(){
+    public function api_event()
+    {
         $query = $this->db->get('event')->result();
         return $query;
     }
@@ -1499,4 +1516,118 @@ class Main_model extends CI_Model
         $this->db->delete('event');
     }
 
+    //CRUD Complaint
+
+    public function create_complaint($data)
+    {
+        return $this->db->insert('complaint', $data);
+    }
+    private function _get_complaint_query()
+    {
+        $column_order = array('id', 'image', 'title', 'date', 'location', 'category', 'description', 'status', 'finished_image', 'finished_description', 'id_user', 'confirm_status'); //set column field database for datatable orderable
+        $column_search = array('title', 'date', 'location', 'category', 'status', 'confirm_status'); //set column field database for datatable searchable just firstname , lastname , address are searchable
+        $order = array('id' => 'desc'); // default order 
+
+        $this->db->from('complaint');
+
+        $i = 0;
+
+        foreach ($column_search as $item) // loop column 
+        {
+            if ($_POST['search']['value']) // if datatable send POST for search
+            {
+
+                if ($i === 0) // first loop
+                {
+                    $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+                    $this->db->like($item, $_POST['search']['value']);
+                } else {
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+
+                if (count($column_search) - 1 == $i) //last loop
+                    $this->db->group_end(); //close bracket
+            }
+            $i++;
+        }
+
+        if (isset($_POST['order'])) // here order processing
+        {
+            $this->db->order_by($column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else if (isset($order)) {
+            $orders = $order;
+            $this->db->order_by(key($orders), $orders[key($orders)]);
+        }
+    }
+
+    function read_complaint()
+    {
+        $this->_get_complaint_query();
+        if ($_POST['length'] != -1)
+            $this->db->limit($_POST['length'], $_POST['start']);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function get_data_username_user_complaint($id)
+    {
+        return $this->db->query("SELECT username FROM users WHERE id_user = '$id' LIMIT 1");
+    }
+
+    function get_data_id_user_complaint($username)
+    {
+        return $this->db->query("SELECT id FROM users WHERE username = '$username' LIMIT 1");
+    }
+
+    function count_filtered_complaint()
+    {
+        $this->_get_complaint_query();
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+
+    public function count_all_complaint()
+    {
+        $this->db->from('complaint');
+        return $this->db->count_all_results();
+    }
+
+    public function api_complaint()
+    {
+        $query = $this->db->get('complaint')->result();
+        return $query;
+    }
+
+    public function get_by_complaint($id)
+    {
+        $this->db->from('complaint');
+        $this->db->where('id', $id);
+        $query = $this->db->get();
+
+        return $query->row();
+    }
+
+    public function edit_complaint_confirm($where, $data)
+    {
+        $this->db->update('complaint', $data, $where);
+        return $this->db->affected_rows();
+    }
+
+    public function update_complaint_status($where, $data)
+    {
+        $this->db->update('complaint', $data, $where);
+        return $this->db->affected_rows();
+    }
+
+    public function update_complaint_finished($where, $data)
+    {
+        $this->db->update('complaint', $data, $where);
+        return $this->db->affected_rows();
+    }
+
+    public function delete_complaint($id)
+    {
+        $this->db->where('id', $id);
+        $this->db->delete('complaint');
+    }
 }
