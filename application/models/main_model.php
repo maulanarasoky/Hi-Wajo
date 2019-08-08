@@ -1483,6 +1483,12 @@ class Main_model extends CI_Model
         return $this->db->count_all_results();
     }
 
+    public function edit_event_confirm($where, $data)
+    {
+        $this->db->update('event', $data, $where);
+        return $this->db->affected_rows();
+    }
+
     public function api_event()
     {
         $query = $this->db->get('event')->result();

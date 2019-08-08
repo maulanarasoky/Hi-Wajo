@@ -395,7 +395,10 @@ class Main extends CI_Controller
     public function news_api()
     {
         $query = $this->model->api_news();
-        echo json_encode($query);
+        $response = array(
+            'result' => $query
+        );
+        echo json_encode($response);
     }
 
     public function edit_news($id)
@@ -2684,7 +2687,7 @@ class Main extends CI_Controller
                     'ticket' => ucwords(strtolower($this->input->post('ticket'))),
                     'organizer' => ucwords(strtolower($this->input->post('organizer'))),
                     'description' => ucwords(strtolower($this->input->post('description'))),
-                    'status' => 'Confirm',
+                    'status' => 'Konfirmasi',
                     'id_user' => 0
                 );
                 $insert = $this->model->create_event($data_content);
@@ -2748,7 +2751,7 @@ class Main extends CI_Controller
                     'ticket' => ucwords(strtolower($this->input->post('ticket'))),
                     'organizer' => ucwords(strtolower($this->input->post('organizer'))),
                     'description' => ucwords(strtolower($this->input->post('description'))),
-                    'status' => 'Confirm',
+                    'status' => 'Pending',
                     'id_user' => $this->model->get_data_id_user_event($this->session->userdata('username'))
                 );
                 $insert = $this->model->create_event($data_content);
@@ -2792,7 +2795,7 @@ class Main extends CI_Controller
             $row[] = $data->title;
             $row[] = $data->date;
             $row[] = $data->location;
-            $row[] = $data->ticket;
+            $row[] = "Rp. " . $data->ticket;
             $row[] = $data->organizer;
             $row[] = character_limiter($data->description, 20);
             $row[] = $data->status;
@@ -2802,11 +2805,15 @@ class Main extends CI_Controller
             } else {
                 $row[] = "Admin";
             }
-
-            //add html for action
-            $row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_event(' . "'" . $data->id . "'" . ')"><i class="glyphicon glyphicon-pencil"></i> Edit</a>
-                  <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="get_data_delete_event(' . "'" . $data->id . "'" . ')"><i class="glyphicon glyphicon-trash"></i> Delete</a>';
-
+            
+            if($data->status == "Pending"){
+                $row[] = '<button class="btn btn-sm btn-warning" href="javascript:void(0)" title="Edit" onclick="confirm_event(' . "'" . $data->id . "'" . ')"><i class="glyphicon glyphicon-pencil"></i> Konfirmasi</button>';
+            }else if($data->status == "Konfirmasi" && $data->id_user == 0){
+                $row[] = '<button class="btn btn-sm btn-primary" href="javascript:void(0)" title="Hapus" onclick="edit_event(' . "'" . $data->id . "'" . ')"><i class="glyphicon glyphicon-trash"></i> Edit</button>
+                <button class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="get_data_delete_event(' . "'" . $data->id . "'" . ')"><i class="glyphicon glyphicon-trash"></i> Hapus</button>';
+            }else if($data->status == "Konfirmasi" && $data->id_user <> 0){
+                $row[] = '<button class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="get_data_delete_event(' . "'" . $data->id . "'" . ')"><i class="glyphicon glyphicon-trash"></i> Hapus</button>';
+            }
             $allData[] = $row;
         }
 
@@ -2820,10 +2827,22 @@ class Main extends CI_Controller
         echo json_encode($output);
     }
 
+    public function edit_event_confirm($id)
+    {
+        $change = array(
+            'status' => 'Konfirmasi'
+        );
+        $data = $this->model->edit_event_confirm(array('id' => $id), $change);
+        echo json_encode($data);
+    }
+
     public function event_api()
     {
         $query = $this->model->api_event();
-        echo json_encode($query);
+        $response = array(
+            'result' => $query
+        );
+        echo json_encode($response);
     }
 
     public function edit_event($id)
@@ -2998,13 +3017,17 @@ class Main extends CI_Controller
                 $row[] = "Admin";
             }
             if ($data->confirm_status == "Belum dikonfirmasi") {
-                $row[] = '<a class="btn btn-sm btn-warning" href="javascript:void(0)" title="Konfirmasi" onclick="edit_complaint_confirm(' . "'" . $data->id . "'" . ')"><i class="glyphicon glyphicon-pencil"></i> Confirm</a>';
-            } elseif ($data->confirm_status == "Dikonfirmasi") {
-                $row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_status_complaint(' . "'" . $data->id . "'" . ')"><i class="glyphicon glyphicon-pencil"></i> Status</a>';
+                $row[] = '<button class="btn btn-sm btn-warning" href="javascript:void(0)" title="Konfirmasi" onclick="edit_complaint_confirm(' . "'" . $data->id . "'" . ')"><i class="glyphicon glyphicon-pencil"></i> Konfirmasi</button>
+                <button class="btn btn-sm btn-danger" href="javascript:void(0)" title="Konfirmasi" onclick="get_data_delete_complaint(' . "'" . $data->id . "'" . ')"><i class="glyphicon glyphicon-pencil"></i> Hapus</button>';
+            } elseif ($data->confirm_status == "Dikonfirmasi" && $data->status <> "Finish") {
+                $row[] = '<button class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_status_complaint(' . "'" . $data->id . "'" . ')"><i class="glyphicon glyphicon-pencil"></i> Status</button>';
+            }elseif ($data->confirm_status === "Dikonfirmasi" && $data->status === "Finish" && $data->finished_description <> null && $data->finished_image <> null) {
+                $row[] = '<button class="btn btn-sm btn-secondary" href="javascript:void(0)" disabled title="Edit" onclick="edit_finish_complaint(' . "'" . $data->id . "'" . ')"><i class="glyphicon glyphicon-pencil"></i> Selesai</button>';
+            }elseif ($data->confirm_status === "Dikonfirmasi" && $data->status === "Finish") {
+                $row[] = '<button class="btn btn-sm btn-success" href="javascript:void(0)" title="Edit" onclick="edit_finish_complaint(' . "'" . $data->id . "'" . ')"><i class="glyphicon glyphicon-pencil"></i> Bukti</button>';
             }
 
             //add html for action
-            $row[] = '<a class="btn btn-sm btn-success" href="javascript:void(0)" title="Edit" onclick="edit_finish_complaint(' . "'" . $data->id . "'" . ')"><i class="glyphicon glyphicon-pencil"></i> Bukti</a>';
 
             $allData[] = $row;
         }
@@ -3022,13 +3045,17 @@ class Main extends CI_Controller
     public function complaint_api()
     {
         $query = $this->model->api_complaint();
-        echo json_encode($query);
+        $response = array(
+            'result' => $query
+        );
+        echo json_encode($response);
     }
 
     public function edit_complaint_confirm($id)
     {
         $change = array(
-            'confirm_status' => 'Dikonfirmasi'
+            'confirm_status' => 'Dikonfirmasi',
+            'status' => 'Pending'
         );
         $data = $this->model->edit_complaint_confirm(array('id' => $id), $change);
         echo json_encode($data);
@@ -3048,7 +3075,7 @@ class Main extends CI_Controller
         $data = $this->model->update_complaint_status(array('id' => $this->input->post('id')), $change);
         if ($data == TRUE) {
             $response = array(
-                'status' => 'success',
+                'status' => 'success status',
                 'message' => 'Update status success'
             );
             $this->output
@@ -3065,7 +3092,7 @@ class Main extends CI_Controller
 
     public function update_complaint_finished()
     {
-        $this->form_validation->set_rules('finished_description', 'finished_description', 'required');
+        $this->form_validation->set_rules('description', 'description', 'required');
         // print_r($_FILES);
         if ($this->form_validation->run() == true) {
 
@@ -3084,12 +3111,12 @@ class Main extends CI_Controller
                 $data_image = array('upload_image' => $this->upload->data());
                 $data_content = array(
                     'finished_image' => 'assets/foto/' . $data_image['upload_image']['file_name'],
-                    'finished_description' => $this->input->post('finished_description')
+                    'finished_description' => $this->input->post('description')
                 );
                 $insert = $this->model->update_complaint_finished(array('id' => $this->input->post('id')), $data_content);
                 if ($insert == TRUE) {
                     $response = array(
-                        'status' => 'success',
+                        'status' => 'success finish',
                         'message' => 'Place has been Inserted Successfully !'
                     );
                 } else {
@@ -3113,6 +3140,13 @@ class Main extends CI_Controller
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($response));
+    }
+
+    public function edit_complaint($id)
+    {
+        $data = $this->model->get_by_complaint($id);
+        // $data->dob = ($data->dob == '0000-00-00') ? '' : $data->dob; // if 0000-00-00 set tu empty for datepicker compatibility
+        echo json_encode($data);
     }
 
     public function delete_complaint($id)

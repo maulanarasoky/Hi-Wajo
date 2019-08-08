@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 07, 2019 at 06:10 PM
+-- Generation Time: Aug 08, 2019 at 01:49 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.3
 
@@ -123,8 +123,9 @@ CREATE TABLE `complaint` (
 --
 
 INSERT INTO `complaint` (`id`, `image`, `title`, `date`, `location`, `category`, `description`, `status`, `finished_image`, `finished_description`, `id_user`, `confirm_status`) VALUES
-(1, 'assets/foto/nature.jpg', 'test', '2019-08-05 14:09:10', 'loca', 'Banjir', 'desc', 'Pending', '', '', 1, 'Belum dikonfirmasi'),
-(2, 'assets/foto/nature.jpg', 'Baru', '2019-08-06 03:36:01', 'location baru', 'Banjir', 'Banjir boi', 'Pending', '', '', 1, 'Dikonfirmasi');
+(1, 'assets/foto/nature.jpg', 'test', '2019-08-05 14:09:10', 'loca', 'Banjir', 'desc', 'Finish', 'assets/foto/ic_launcher_nature', 'Coba ah', 1, 'Dikonfirmasi'),
+(2, 'assets/foto/nature.jpg', 'Baru', '2019-08-06 03:36:01', 'location baru', 'Banjir', 'Banjir boi', 'Finish', 'assets/foto/waterfall.png', 'dkjshf', 1, 'Dikonfirmasi'),
+(3, 'assets/foto/nature.jpg', 'wew', '2019-08-08 11:08:46', 'baru', 'Banjir', 'ini wew', 'Finish', 'assets/foto/Indonesia.png', 'Sudah selesai ya', 1, 'Dikonfirmasi');
 
 -- --------------------------------------------------------
 
@@ -223,7 +224,7 @@ CREATE TABLE `event` (
   `ticket` varchar(30) NOT NULL,
   `organizer` varchar(30) NOT NULL,
   `description` text NOT NULL,
-  `status` varchar(11) NOT NULL,
+  `status` varchar(20) NOT NULL,
   `id_user` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -232,7 +233,9 @@ CREATE TABLE `event` (
 --
 
 INSERT INTO `event` (`id`, `poster`, `title`, `date`, `location`, `ticket`, `organizer`, `description`, `status`, `id_user`) VALUES
-(1, 'assets/foto/nature.jpg', 'Example', '2019-07-25', 'Wajo', 'Rp. 300.000,-', 'Example Organizer', 'This is event', 'Pending', 1);
+(7, 'assets/foto/waterfall.png', 'Ksjhdksjf', '2019-08-24', 'Jkdsfh', 'Jkdhsk', 'Jhfdksjh', 'Jhdskjfh', 'Konfirmasi', 0),
+(8, 'assets/foto/nature.jpg', 'jksdhf', '2019-08-29', 'dsjkfh', 'jkhdskj', 'jkhdskj', 'jjhdksjfhks', 'Konfirmasi', 1),
+(9, 'assets/foto/waterfall.png', 'Jkxh', '2019-08-22', 'Jdkhfdk', '50000', 'Dsfdhsj', 'Sdjfkhdsk', 'Konfirmasi', 0);
 
 -- --------------------------------------------------------
 
@@ -524,8 +527,7 @@ ALTER TABLE `cafe`
 -- Indexes for table `complaint`
 --
 ALTER TABLE `complaint`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id_user` (`id_user`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `culinary`
@@ -648,7 +650,7 @@ ALTER TABLE `cafe`
 -- AUTO_INCREMENT for table `complaint`
 --
 ALTER TABLE `complaint`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `culinary`
@@ -672,7 +674,7 @@ ALTER TABLE `entertainment`
 -- AUTO_INCREMENT for table `event`
 --
 ALTER TABLE `event`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `government`
@@ -733,16 +735,6 @@ ALTER TABLE `travel_transportation`
 --
 ALTER TABLE `users`
   MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `complaint`
---
-ALTER TABLE `complaint`
-  ADD CONSTRAINT `complaint_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

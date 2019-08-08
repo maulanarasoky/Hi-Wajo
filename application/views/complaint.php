@@ -647,7 +647,7 @@
                                 <table class="table table-bordered table-hover" id="table" style="width:100%;">
                                     <thead>
                                         <tr>
-                                            <th>Image</th>
+                                            <th style="width:10%;">Image</th>
                                             <th style="width:10%;">Title</th>
                                             <th style="width:10%;">Date</th>
                                             <th style="width:10%;">Location</th>
@@ -655,8 +655,7 @@
                                             <th style="width:10%;">Description</th>
                                             <th style="width:10%;">Status</th>
                                             <th style="width:10%;">User</th>
-                                            <th style="width:10%;">Confirm Status</th>
-                                            <th style="width:10%;">Bukti</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -673,9 +672,9 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <form method="POST" id="add_news">
+                        <form method="POST" id="statusForm">
                             <input type="hidden" name="id" />
-                            <div class="alert alert-danger" role="alert" id="danger">
+                            <div class="alert alert-info" role="alert" id="dangerStatus">
                                 
                             </div>
                             <div class="form-group form-float">
@@ -686,7 +685,7 @@
                                 </select>
                                 <label for="exampleFormControlSelect1">Status</label>
                             </div>
-                            <button type="submit" class="btn btn-primary" id="btnSave" onclick="save();">Submit</button>
+                            <button type="button" class="btn btn-primary" id="btnSave" onclick="save();">Submit</button>
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -696,28 +695,28 @@
             </div>
         </div>
 
-        <div id="finishedModel" class="modal fade">
+        <div id="finishModal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <form method="POST" id="add_news">
+                        <form method="POST" id="finishForm">
                             <input type="hidden" name="id" />
-                            <div class="alert alert-danger" role="alert" id="dangerFinish">
+                            <div class="alert alert-info" role="alert" id="dangerFinish">
                                 
                             </div>
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <textarea name="finished_description" cols="30" rows="5" class="form-control no-resize" required></textarea>
+                                    <textarea name="description" cols="30" rows="5" class="form-control no-resize" required></textarea>
                                     <label class="form-label">Finished Description</label>
                                 </div>
                             </div>
                             <div class="form-group form-float">
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" name="finished_image" aria-describedby="inputGroupFileAddon01" required>
+                                    <input type="file" class="custom-file-input" name="image" aria-describedby="inputGroupFileAddon01" required>
                                     <label class="custom-file-label" for="inputGroupFile01">Select Image</label>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary" id="btnSave" onclick="save();">Submit</button>
+                            <button type="button" class="btn btn-primary" id="btnSave" onclick="save();">Submit</button>
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -739,7 +738,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger btn-ok" name="delete" onclick="delete_event(this.value)">Delete</button>
+                    <button type="button" class="btn btn-danger btn-ok" name="delete" onclick="delete_complaint(this.value)">Delete</button>
                 </div>
             </div>
         </div>
@@ -824,15 +823,11 @@
                 success: function(data)
                 {
         
-                    $('#danger').show();
-                    $('#danger').html('Silahkan ganti status').css({"text-align":"center"});
+                    $('#dangerStatus').show();
+                    $('#dangerStatus').html('Silahkan ganti status').css({"text-align":"center"});
                     $('[name="id"]').val(data.id);
                     $('[name="status"]').val(data.status);
                     $('#statusModal').modal('show');
-                    if (data.status == "Finish"){
-                        $('[name="status"]').prop('disabled', true);
-                        $('#danger').html('Status tidak dapat diubah lagi').css({"text-align":"center"});
-                    }
                 },
                 error: function (jqXHR, textStatus, errorThrown)
                 {
@@ -856,8 +851,7 @@
                     $('#dangerFinish').html('Silahkan upload bukti foto').css({"text-align":"center"});
                     $('[name="id"]').val(data.id);
                     $('[name="finished_description"]').val(data.finished_description);
-                    $('#finishedModel').modal('show'); // show bootstrap modal when complete loaded
-                    // $('.modal-title').text('Edit Person'); // Set title to Bootstrap modal title
+                    $('#finishModal').modal('show');
         
                 },
                 error: function (jqXHR, textStatus, errorThrown)
@@ -894,15 +888,16 @@
         {
             $('#btnSave').text('saving...'); //change button text
             $('#btnSave').attr('disabled',true); //set button disable 
-            var url;
+            var url, form, formData;
             if (save_method == 'update_status'){
                 url = "<?php echo site_url('main/update_complaint_status')?>";
+                form = $('#statusForm')[0];
             }else if(save_method == 'update_finish') {
                 url = "<?php echo site_url('main/update_complaint_finished')?>";
+                form = $('#finishForm')[0];
             }
 
-            var form = $('#add_news')[0];
-            var formData = new FormData(form);
+            formData = new FormData(form);
         
             // ajax adding data to database
             $.ajax({
@@ -913,19 +908,18 @@
                 processData:false,
                 success: function(data)
                 {
-                    console.log(data);
         
-                    if(data.status == "success") //if success close modal and reload ajax table
+                    if(data.status == "success status") //if success close modal and reload ajax table
                     {
                         $('#statusModal').modal('hide');
-                        $('#finishModel').modal('hide');
                         table.ajax.reload();
-                        $('#success').show();
-                        $('#success').html('Edit data success !!').css({"text-align" : "center", "font-weight" : "bold"});
-                    } else if(data.status == "errors"){
-                        $('#danger').show();
-                        $('#danger').html(data.message);
+                    } 
+                    
+                    if(data.status == "success finish"){
+                        $('#finishModal').modal('hide');
+                        table.ajax.reload();
                     }
+
                     $('#btnSave').text('save'); //change button text
                     $('#btnSave').attr('disabled',false); //set button enable 
         

@@ -678,7 +678,7 @@
                     <div class="modal-body">
                         <form method="POST" id="add_news">
                             <input type="hidden" name="id" />
-                            <div class="alert alert-danger" role="alert" id="danger">
+                            <div class="alert alert-info" role="alert" id="danger">
                                 
                             </div>
                             <div class="form-group form-float">
@@ -701,7 +701,7 @@
                             </div>
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input type="text" class="form-control" name="ticket" required>
+                                    <input type="number" class="form-control" name="ticket" required>
                                     <label class="form-label">Ticket (person)</label>
                                 </div>
                             </div>
@@ -796,6 +796,29 @@
                 ],
             });
         });
+
+        function confirm_event(id)
+        {
+        
+            //Ajax Load data from ajax
+            $.ajax({
+                url : "<?php echo site_url('main/edit_event_confirm')?>/" + id,
+                type: "POST",
+                dataType: "JSON",
+                success: function(data)
+                {
+        
+                    table.ajax.reload(); // show bootstrap modal when complete loaded
+                    // $('.modal-title').text('Edit Person'); // Set title to Bootstrap modal title
+        
+                },
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                    alert('Error get data from ajax');
+                }
+            });
+        }
+
         function create_event()
         {
             save_method = 'add';
@@ -822,7 +845,7 @@
                 {
         
                     $('#danger').show();
-                    $('#danger').html('Silahkan upload ulang poster');
+                    $('#danger').html('Silahkan upload ulang poster').css({"text-align":"center"});
                     $('[name="id"]').val(data.id);
                     $('[name="title"]').val(data.title);
                     $('[name="date"]').val(data.date);
@@ -898,6 +921,7 @@
                         $('#newsModal').modal('hide');
                         table.ajax.reload();
                         $('#success').show();
+                        $('#danger').hide();
                         $('#success').html('Upload data success !!').css({"text-align" : "center", "font-weight" : "bold"});
                     } else if(data.status == "errors"){
                         $('#danger').show();
@@ -931,6 +955,7 @@
                     $('#confirm-delete').modal('hide');
                     table.ajax.reload();
                     $('#delete-success').show();
+                    $('#success').hide();
                     $('#delete-success').html('Delete Success !!').css({"text-align" : "center", "font-weight" : "bold"});
 
                 },
